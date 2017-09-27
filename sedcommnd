@@ -1,0 +1,223 @@
+How to append long string  at the end of specifici line 
+
+specific line : pf.cluster.tcp.discovery.initial.hosts
+adding string : ,eqa-ping35[7600],eqa-ping36[7600],eqa-ping37[7600]
+
+sed -i -e '/^pf\.cluster\.tcp\.discovery\.initial\.hosts/s/$/\,eqa-ping35\[7600\]\,eqa-ping36\[7600\]\,eqa-ping37\[7600\]/' abc.txt
+
+
+How to remove last character in the line 
+
+sed -e 's/.$//' serverlist_011717  >serverlist_011717_a
+---------------------------------------------
+http://www.grymoire.com/Unix/Sed.html
+
+------------------------------------
+ How to rename file 
+if we want to move SC201612200000284.xml_20161220_124301 to SC201612200000284.xml
+
+SC201612200000284.xml_20161220_124301 SC201612200000284.xml
+
+cat list.txt 
+
+SC201612200000284.xml_20161220_124301
+SC201612200000279.xml_20161220_124145
+SC201612200000290.xml_20161220_124431
+SC201612200000288.xml_20161220_124401
+SC201612200000278.xml_20161220_124130
+SC201612200000531.xml_20161220_135702
+SC201612200000301.xml_20161220_124717
+SC201612200000391.xml_20161220_134106
+SC201612200000513.xml_20161220_135136
+SC201612200000295.xml_20161220_124547
+SC201612200000403.xml_20161220_134408
+SC201612200000303.xml_20161220_124747
+
+
+for i in $(cat list.txt)  ; do mv $i "$(echo $i | sed -e 's/_.*//')" ; done
+
+--------------------------------------------------
+How to put comment 
+
+crontab -l | sed '/lmsingestor/s/^/#/'  >> serach for lmsingestor like grepping on crontab, then comment  out 
+
+how to remove comment 
+crontab -l | sed '/${PATTERN}/s/^#//'  
+
+-------------------------------------------------
+
+
+how to replace exact word
+sed -i -e 's/\([[:blank:]]tc51\)/ a-tc66/' accessui_shutdown.sh
+
+It will search exact tc51, so aviod searchig eqa-tc51
+
+
+-------------------------------------------------
+How to remove blank line and white spcae in file from command line  
+sed -i -e '/^$/d' shorthost
+cat text.txt | sed -d ^$
+-------------------------------------
+removing any lines has comment and after it : 
+
+ssh 2.2.2.2 ## this is fake ip 
+
+sed -i -e "s/#.*//" longlist
+
+This command removing # and after that.
+
+result 
+ssh 2.2.2.2
+
+Removing ' character anywhere in line 
+sed -i -e "s/'//" longlist
+---------------------------------------------------------------------------------
+
+insert/append/delete
+sed '/\<Mary\>/a ppppppppp' a_file >> append line pppppp
+sed '/\<Mary\>/i my name is kishor' a_file >> insert "My name is  Kishiir 
+sed '/\<Mary\>/d' a_file |cat -n >> Delete line with Mary word 
+sed 's/\<Mary\>//' a_file  > remove mary in the line with white space
+---------------------------------------------------------------------------------
+
+my_text 
+>>>>>>>>>>>>>>>
+
+
+#### sed -e 
+### kishor pant 
+  988 suhani many congratulation 
+ 876 hello my name is kishor 
+   8777  this is my degree 
+The Mary had a little lamb.
+And everywhere that Mary
+went, the lamb was sure
+ 2013-12-12 $244.58
+
+
+>>>>>>>>>>>>>>
+
+sed -e 's/^\#\{4,\}/Nepal/' a_file  >> replace line starts with 4 or more # with "Nepal"
+sed -e 's/^\#\{4,\}/Nepal/' a_file | cat -n
+
+/# deleting white 1 to 3 white spaces  #/
+sed -i 's/^\s\{1,3\}//' my_text > removing one to upto there white space 
+
+/# deleting number then deleting white space for 1 to three 
+sed -e 's/^[0-9]\{1,3\}//' my_text | sed -i 's/^\s\{1,3\}//'  my_text 
+
+\<[tT]he\>   "search whole word anywhere in the line 
+------------------------------------------------------------
+
+cat abc | sed -i -e 's/\r$//' 
+
+/# delete Dos style new line return  
+
+---------------------------------------------------------------------
+If you wanted to keep the first word of a line, and delete the rest of the line,
+ mark the important part with the parenthesis:
+
+#echo abcd123 | sed 's/\([a-z]*\).*/\1/'
+abcd
+# echo "kishor pant abcd123" | sed 's/\([a-z]*\s*[a-z]*\).*/\1/' 
+kishor pant 
+
+since \1 remember withing parenthese and delete rest of it, then first it remeber word, then white space then  a word
+[a-z]* - first word
+\s* - white spaces 
+[a-z]* -second word 
+.* - any character  which is out of parentehse and thus will be deleted 
+-----------------------------------------------------------------------------
+& - this will remeber
+
+sed 's/[^ ]*/(&)/' -> match first word and put in () 
+sed 's/[^ ]*/(&)/g' - match every word and put every word in ()
+
+
+cat a_file | grep '^[0-9]\{4,\}' |  sed 's/[^ ]*/ ##&/'
+ ##7033098856 ppant
+ ##2013-12-12 $244.58
+ ##1986-06-13
+ ##1009.455
+
+First grepping the line which starts with 4 digits and more then sent to sed which capture first word(digit)
+in put ##  
+--------------------------------------------
+last digit must be even digit 
+# grep '^[0-9]*[02468]' a_file
+223  45.23.85
+7033098856 ppant
+234 99 ppp
+2013-12-12 $244.58
+1986 -06-13
+1009.455
+
+second digit must be even digit 
+#grep '^[0-9][02468]*' a_file
+223  45.23.85
+7033098856 ppant
+234 99 ppp
+2013-12-12 $244.58
+1986 -06-13
+1009.455
+
+----------------------------------------------------------
+One method of combining multiple commands is to use a -e before each command: 
+
+sed -e 's/a/A/' -e 's/b/B/' <old >new 
+-----------------------------------------------------------------
+counting line start with #
+it will make blank line, then count it 
+sed -e 's/^#.*//' a_file | grep  '^$' | wc -l
+grep -c'^$' a_file >> will  count blank line 
+
+sed -e 's/^#.*//' a_file | wc -l  
+(This also gives same output )
+
+----------------------------------------------------
+If we have many commands, if that won't fit on one line 
+sed -e 's/a/A/g' \
+    -e 's/e/E/g' \
+    -e 's/i/I/g' \
+    -e 's/o/O/g' \
+    -e 's/u/U/g'  <old >new
+
+------------------------------------------------------
+Burne shell makes this easier as a quote can cover several lines:
+
+#!/bin/sh
+sed '
+s/a/A/g 
+s/e/E/g 
+s/i/I/g 
+s/o/O/g 
+s/u/U/g'  <old >new
+
+capvowel.sed :
+-------------------------------------------------------------
+cat d_file | sed -e '3s/\(t\)eh/\1he/ig'  >> Operate only in 3rd line
+
+cat d_file | sed -e '3,5s/\(t\)eh/\1he/ig' >> Operate in between line 3 and 5 
+
+-----------------------------------------------------------------------
+
+echo 'helloworld' | sed 's/hello\(wo\(rl\)d\)/\2/'
+rl
+
+echo 'helloworld' | sed 's/hello\(wo\(rl\)d\)/\1/'
+world
+
+echo 'helloworld' | sed 's/hello\(wo\(rl\)d\)/\1\2/'
+worldrl
+
+echo 'helloworld' | sed 's/hello\(wo\(rl\)\(d\)\)/\3/'
+d
+--------------------------------------------------------------------------------
+to delete empty lines ^$ 
+
+cat text.txt | sed -d ^$ 
+
+cat comfile.txt | sed -e '/^\t*$/d' >> delete empty and tab character of lines 
+  
+cat comfile.txt | sed -e '/^\( \|\t\)*$/d' >> delete emtry lines of space and tab
+-------------------------------------

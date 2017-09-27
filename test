@@ -1,0 +1,18 @@
+this is test
+chown apache:web tmp_outcomes tmp_smart
+
+chmod 755 tmp_outcomes tmp_smart
+
+
+This is my mouse and mouse coilor is black,
+
+cat is good.
+That cat is good one.
+
+2 .
+
+
+The substitution operator, s///, is really just an extension of the match operator
+that allows you to replace the text matched with some new text. The basic form
+of the operator is
+

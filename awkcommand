@@ -1,0 +1,95 @@
+BEGIN { …. initialization awk commands …}
+{ …. awk commands for each line of the file…}
+END { …. finalization awk commands …}
+
+ls -l |  awk '{for (i=1;i<3; i++) { getline} ; print NR, $0}' 
+
+ls -l | awk ' BEGIN {sum=0} {sum=sum+$5} END { print sum}' 
+
+cat awk_strip
+#!/usr/bin/awk -f
+#only print out every 3rd line of input file
+BEGIN {skip=3}
+{for (i=1;i<skip;i++)
+{getline};
+print $0}
+
+
+-----------------------------------------------------------------
+cat dataserver
+838 ?        Sl   2064:47 /tc-pnp/temp org.apache.catalina.startup.Bootstrap start
+ 1037 ?        Sl    30:27 /tc-ols/temp org.apache.catalina.startup.Bootstrap start
+ 3258 ?        Sl   167:05 /tc-accessui/temp org.apache.catalina.startup.Bootstrap start
+ 6867 ?        Sl   3049:19 /tc-accnts/temp org.apache.catalina.startup.Bootstrap start
+ 7184 ?        Sl   316:20 /tc-accounts-plus-svc/temp org.apache.catalina.startup.Bootstrap start
+ 7522 ?        Sl   618:09 /tc-progress-perf-bsv/temp org.apache.catalina.startup.Bootstrap start
+ 8936 ?        Sl   1086:25 /tc-lms2/temp org.apache.catalina.startup.Bootstrap start
+ 8976 ?        Sl   6074:12 /tc-progress/temp org.apache.catalina.startup.Bootstrap start
+11096 ?        Sl   1066:45 /tc-lms5/temp org.apache.catalina.startup.Bootstrap start
+12122 ?        Sl   137:26 /tc-classconnect-svc/temp org.apache.catalina.startup.Bootstrap start
+12233 ?        Sl   549:22 /tc-curriculum-player/temp org.apache.catalina.startup.Bootstrap start
+12259 ?        Sl    65:31 /tc-sas-kt/temp org.apache.catalina.startup.Bootstrap start
+12326 ?        Sl   555:06 /tc-curric/temp org.apache.catalina.startup.Bootstrap start
+15732 ?        Sl   1062:42 /tc-lms3/temp org.apache.catalina.startup.Bootstrap start
+16929 ?        Sl   1042:01 /tc-lms4/temp org.apache.catalina.startup.Bootstrap start
+18163 ?        Sl    19:54 /tc-security-gateway-svc/temp org.apache.catalina.startup.Bootstrap start
+19685 ?        Sl   100:59 /tc-idms/temp org.apache.catalina.startup.Bootstrap start
+25410 ?        Sl   432:12 /tc-lms/temp org.apache.catalina.startup.Bootstrap start
+
+ cat dataserver | awk 'BEGIN { FS = "/" }  { print $1"\t"$2 } '
+  838 ?        Sl   2064:47     tc-pnp
+ 1037 ?        Sl    30:27      tc-ols
+ 3258 ?        Sl   167:05      tc-accessui
+ 6867 ?        Sl   3049:19     tc-accnts
+ 7184 ?        Sl   316:20      tc-accounts-plus-svc
+ 7522 ?        Sl   618:09      tc-progress-perf-bsv
+ 8936 ?        Sl   1086:25     tc-lms2
+ 8976 ?        Sl   6074:12     tc-progress
+11096 ?        Sl   1066:45     tc-lms5
+12122 ?        Sl   137:26      tc-classconnect-svc
+12233 ?        Sl   549:22      tc-curriculum-player
+12259 ?        Sl    65:31      tc-sas-kt
+12326 ?        Sl   555:06      tc-curric
+15732 ?        Sl   1062:42     tc-lms3
+16929 ?        Sl   1042:01     tc-lms4
+18163 ?        Sl    19:54      tc-security-gateway-svc
+19685 ?        Sl   100:59      tc-idms
+25410 ?        Sl   432:12      tc-lms
+
+cat dataserver | awk 'BEGIN { FS = "/" }  { print $1"\t"$2"\t"$3 } '
+  838 ?        Sl   2064:47     tc-pnp  temp org.apache.catalina.startup.Bootstrap start
+ 1037 ?        Sl    30:27      tc-ols  temp org.apache.catalina.startup.Bootstrap start
+ 3258 ?        Sl   167:05      tc-accessui     temp org.apache.catalina.startup.Bootstrap start
+ 6867 ?        Sl   3049:19     tc-accnts       temp org.apache.catalina.startup.Bootstrap start
+ 7184 ?        Sl   316:20      tc-accounts-plus-svc    temp org.apache.catalina.startup.Bootstrap start
+ 7522 ?        Sl   618:09      tc-progress-perf-bsv    temp org.apache.catalina.startup.Bootstrap start
+ 8936 ?        Sl   1086:25     tc-lms2 temp org.apache.catalina.startup.Bootstrap start
+ 8976 ?        Sl   6074:12     tc-progress     temp org.apache.catalina.startup.Bootstrap start
+11096 ?        Sl   1066:45     tc-lms5 temp org.apache.catalina.startup.Bootstrap start
+
+------------------------------------------------------------------
+
+ls -l | awk ' BEGIN { print "FILE\t\Owner" } { print $1 } END { print "Done" } '
+
+
+
+--------------------------------------------------------------
+
+cat /etc/passwd | awk 'BEGIN { FS=":"} { print $1, $2 , $3 , $4} ' | grep kpant
+
+
+---------------------------------------------------------------------------------------
+
+
+#!/bin/bash
+TOMCAT=$(curl -s http://sand.k12.int/SAND/NODES/inventory/tomcat_ports.php?tomcat=$1 |grep .)
+echo $TOMCAT |  awk 'BEGIN  { FS = "," }  { print "Tomcat:\t"$1"\n\tHTTP Port:\t"$2"\n\tAJP Port:\t"$3"\n\tShutdown Port:\t"$4"\n\tJMX Port:\t"$5}'
+
+TOMCAT=tc-lms,8911,7911,8511,7811 
+
+
+
+
+
+
+

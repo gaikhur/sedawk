@@ -4,4 +4,4 @@ echo "Hello I am Anil"
 echo " ---------------"
 echo " testing directory"
 pwd
-echo " yyyyyyyyyyyyyyyy"
+hostnamectl
